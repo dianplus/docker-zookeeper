@@ -17,6 +17,15 @@ RUN wget -q -O - http://apache.mirrors.pair.com/zookeeper/zookeeper-$ZOOKEEPER_V
     && cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg \
     && mkdir -p /tmp/zookeeper
 
+RUN apk add --update go git \
+  && git clone https://github.com/outbrain/zookeepercli.git /go \
+  && cd /go/src/github.com/outbrain/zookeepercli \
+  && export GOPATH=/go \
+	&& go get \
+	&& go build -o /usr/local/bin/zookeepercli \
+	&& rm -rf /go \
+	&& apk del --purge go git
+
 ENV JAVA_HOME /usr/lib/jvm/default-jvm
 
 EXPOSE 2181 2888 3888
