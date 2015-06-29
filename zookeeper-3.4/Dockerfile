@@ -17,11 +17,11 @@ RUN wget -q -O - http://apache.mirrors.pair.com/zookeeper/zookeeper-$ZOOKEEPER_V
     && cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg \
     && mkdir -p /tmp/zookeeper
 
-ENV ZOOKEEPERCLI_TAG "feature/acls-create"
+ENV ZOOKEEPERCLI_TAG "v1.0.10"
 RUN apk add --update go git \
-  && git clone https://github.com/ryane/zookeepercli.git /go \
+  && git clone https://github.com/outbrain/zookeepercli.git /go \
   && cd /go \
-  && git checkout -b $ZOOKEEPERCLI_TAG origin/$ZOOKEEPERCLI_TAG \
+  && git checkout -b $ZOOKEEPERCLI_TAG $ZOOKEEPERCLI_TAG \
   && cd /go/src/github.com/outbrain/zookeepercli \
   && export GOPATH=/go \
   && go get \
