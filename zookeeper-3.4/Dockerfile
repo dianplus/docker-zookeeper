@@ -1,4 +1,4 @@
-FROM asteris/consul-template:latest
+FROM ciscocloud/consul-template:0.9.0
 
 MAINTAINER Steven Borrelli <steve@aster.is>
 
