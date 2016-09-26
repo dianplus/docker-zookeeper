@@ -1,8 +1,8 @@
-FROM asteris/consul-template:latest
+FROM dianplus/consul-template:latest
 
-MAINTAINER Steven Borrelli <steve@aster.is>
+MAINTAINER Analyser <analyser@gmail.com>
 
-ENV ZOOKEEPER_VERSION 3.4.6
+ENV ZOOKEEPER_VERSION 3.4.9
 ENV ZK_DATA_DIR /var/lib/zookeeper
 ENV ZK_LOG_DIR /var/log/zookeeper
 
@@ -41,4 +41,3 @@ WORKDIR /opt/zookeeper
 VOLUME ["/var/lib/zookeeper", "/var/log/zookeeper"]
 
 ENTRYPOINT ["zk_config.sh"]
-
