@@ -3,10 +3,10 @@
 # REPO=mycompany NAME=zk TAG=test make -e tag
 
 DOCKER = docker
-REPO   = asteris
+REPO   = dianplus
 NAME   = zookeeper
 
-TAG = 3.4.6
+TAG = 3.4.9
 
 build:
 	$(DOCKER) build -t $(NAME) .
