@@ -16,6 +16,9 @@ SERVICE_TAGS=${SERVICE_TAGS:-"zookeeper"}
 ZK_ENV=${ZK_ENV:-"dev"}
 ZK_CLUSTER_ID=${ZK_CLUSTER_ID:-"cluster-id"}
 
+# Consul address
+CONSUL_CONNECT=${CONSUL_CONNECT:-"127.0.0.1:8500"}
+
 # What we register in consul
 # query at http://consul:8500/v1/catalog/service/${CONSUL_SERVICE}
 CONSUL_SERVICE=${CONSUL_SERVICE:-"zookeeper"}
@@ -25,6 +28,7 @@ CONSUL_SERVICE=${CONSUL_SERVICE:-"zookeeper"}
 CONSUL_QUERY=${CONSUL_QUERY:-"${ZK_CLUSTER_ID}.${CONSUL_SERVICE}"}
 
 CONTAINER_NAME="${CONSUL_SERVICE}-${ZK_ENV}-${ZK_CLUSTER_ID}-${ZK_ID}"
+CONTAINER_TIMEZONE=${CONTAINER_TIMEZONE:-"Asia/Shanghai"}
 
 NODE=$(hostname -s)
 
@@ -38,8 +42,7 @@ cat > $OUTFILE <<EOF
 version: '2'
 services:
   zookeeper:
-    restart: always
-    image: ${DOCKER_IMAGE}
+    image: '${DOCKER_IMAGE}'
     volumes:
       - './zk-data:/var/lib/zookeeper'
       - './zk-log:/var/log/zookeeper'
@@ -50,7 +53,7 @@ services:
       - '3888:3888/tcp'
     environment:
       ZK_ID: $ZK_ID
-      CONSUL_CONNECT:    '127.0.0.1:8500'
+      CONSUL_CONNECT:    '${CONSUL_CONNECT}'
       CONSUL_QUERY:      '${CONSUL_QUERY}'
       SERVICE_2181_NAME: '${CONSUL_SERVICE}'
       SERVICE_2181_ID:   '${NODE}:${CONTAINER_NAME}:2181:zkid-${ZK_ID}'
@@ -59,6 +62,7 @@ services:
       SERVICE_3888_NAME: '${CONSUL_SERVICE}-3888'
       SERVICE_3888_ID:   '${NODE}:${CONTAINER_NAME}:3888:zkid-${ZK_ID}'
       SERVICE_TAGS:      '${SERVICE_TAGS},${ZK_ENV},${ZK_CLUSTER_ID},zkid-${ZK_ID}'
-      JAVA_OPTS:         '-Duser.timezone=Asia/Shanghai -Dfile.encoding=UTF-8'
-    container_name: ${CONTAINER_NAME}
+      JAVA_OPTS:         '-Duser.timezone=${CONTAINER_TIMEZONE} -Dfile.encoding=UTF-8'
+    container_name: '${CONTAINER_NAME}'
+    restart: 'always'
 EOF
