@@ -1,4 +1,4 @@
-FROM dianplus/consul-template:latest
+FROM dianplus/consul-template:0.16.0
 
 MAINTAINER Analyser <analyser@gmail.com>
 
